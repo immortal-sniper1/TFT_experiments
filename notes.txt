@@ -1,0 +1,4 @@
+it seems my shitld works with: MCUFRIEND_kbv   library 
+portrait calibration for toutch :
+x  left 167  rt 956  0  240
+y   top  192  bot 949 0 320
