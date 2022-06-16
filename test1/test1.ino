@@ -34,8 +34,8 @@ MCUFRIEND_kbv tft;     // make iteration of the class and name it tft
 
 void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center, uint16_t points, uint16_t k, uint16_t colour)
 {
-  // radious - distance from center to the star pointy points
-  // inner_full_center - distance from the center to the inner angles of a star
+  // radious - distance from center to the star pointy tips
+  // inner_full_center - distance from the center to the inner angles/corners of a star
   // x y - origin point of the star
   // points - number of points that a star has (min 3) , PS it is symetrical star
   // k - rotation offset
@@ -50,8 +50,8 @@ void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center,
   {
     // draws a petal at a time
     tft.drawCircle( x, y, 20 , WHITE);
-    tft.fillTriangle( x , y , x + radious * sin( i * angle + k ) , y + radious * cos( i * angle + k ) , x + inner_full_center * sin( i * angle + angle / 2 + k ) , y + inner_full_center * cos( i * angle + angle / 2 + k ) , colour);
-    tft.fillTriangle( x , y , x + radious * sin( i * angle + k ) , y + radious * cos( i * angle + k ) , x + inner_full_center * sin( i * angle - angle / 2 + k ) , y + inner_full_center * cos( i * angle - angle / 2 + k ) , BLUE);
+    tft.fillTriangle( x , y , x + radious * sin( i * angle  ) , y + radious * cos( i * angle  ) , x + inner_full_center * sin( i * angle + angle / 2 ) , y + inner_full_center * cos( i * angle + angle / 2  ) , colour);
+    tft.fillTriangle( x , y , x + radious * sin( i * angle  ) , y + radious * cos( i * angle  ) , x + inner_full_center * sin( i * angle - angle / 2 ) , y + inner_full_center * cos( i * angle - angle / 2  ) , BLUE);
   }
 
 
