@@ -30,10 +30,10 @@ MCUFRIEND_kbv tft;     // make iteration of the class and name it tft
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // functions
 
+/*
 
-
-void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center, uint16_t points, uint16_t k, uint16_t colour)
-{
+  void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center, uint16_t points, uint16_t k, uint16_t colour)
+  {
   // radious - distance from center to the star pointy tips
   // inner_full_center - distance from the center to the inner angles/corners of a star
   // x y - origin point of the star
@@ -57,7 +57,50 @@ void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center,
 
 
 
+  }
+
+*/
+
+
+void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center, uint16_t n, uint16_t k, uint16_t colour)
+{
+  // radious - distance from center to the star pointy tips
+  // inner_full_center - distance from the center to the inner angles/corners of a star
+  // x y - origin point of the star
+  // n - number of points that a star has (min 3) , PS it is symetrical star
+  // k - rotation offset
+  int16_t i, j;
+  if ( n < 3)
+  {
+    n = 3;
+  }
+  int16_t ext_point[n][2];
+  int16_t int_point[n][2];
+
+
+  float alfa = 2 * PI / n;
+
+  // outer points coordonates
+  for ( i = 0; i < n; i++)
+  {
+    ext_point[i][0] = x + radious * sin( i * alfa );
+    ext_point[i][1] = y + radious * cos( i * alfa );
+  }
+    // inner points coordonates
+  for ( i = 0; i < n; i++)
+  {
+    int_point[i][0] = x + inner_full_center * sin( i * alfa + alfa / 2);
+    int_point[i][1] = y + inner_full_center * cos( i * alfa + alfa / 2);
+  }
+
+  tft.fillTriangle( x, y, ext_point[i][0], ext_point[i][1], int_point[j][0], int_point[j][1], colour);
+
+
+
 }
+
+
+
 
 
 //  +++ some functions from examples
