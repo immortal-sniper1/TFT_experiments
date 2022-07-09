@@ -62,7 +62,7 @@ MCUFRIEND_kbv tft;     // make iteration of the class and name it tft
 */
 
 
-void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center, uint16_t n, uint16_t k, uint16_t colour)
+void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center, uint16_t n, uint16_t k, uint16_t colour, uint16_t colour2=GREEN, uint16_t offset=0)
 {
   // radious - distance from center to the star pointy tips
   // inner_full_center - distance from the center to the inner angles/corners of a star
@@ -83,17 +83,62 @@ void drawStar( int16_t x, int16_t y, int16_t radious, int16_t inner_full_center,
   // outer points coordonates
   for ( i = 0; i < n; i++)
   {
-    ext_point[i][0] = x + radious * sin( i * alfa );
-    ext_point[i][1] = y + radious * cos( i * alfa );
+    ext_point[i][0] = x + radious * sin( i * alfa + offset );
+    ext_point[i][1] = y + radious * cos( i * alfa + offset );
   }
-    // inner points coordonates
+  // inner points coordonates
   for ( i = 0; i < n; i++)
   {
-    int_point[i][0] = x + inner_full_center * sin( i * alfa + alfa / 2);
-    int_point[i][1] = y + inner_full_center * cos( i * alfa + alfa / 2);
+    int_point[i][0] = x + inner_full_center * sin( i * alfa + alfa / 2 + offset );
+    int_point[i][1] = y + inner_full_center * cos( i * alfa + alfa / 2 + offset );
   }
 
-  tft.fillTriangle( x, y, ext_point[i][0], ext_point[i][1], int_point[j][0], int_point[j][1], colour);
+
+
+  Serial.println("vectors:");
+  Serial.print(" outer: ");
+  for ( i = 0; i < n; i++)
+  {
+    Serial.print(  "(" );
+    Serial.print( ext_point[i][0]);
+    Serial.print( " , ");
+    Serial.print( ext_point[i][1]);
+    Serial.print( " )   " );
+  }
+
+
+  Serial.println(" ");
+  Serial.print(" inner: ");
+  for ( i = 0; i < n; i++)
+  {
+    Serial.print(  "(" );
+    Serial.print( int_point[i][0]);
+    Serial.print( " , ");
+    Serial.print( int_point[i][1]);
+    Serial.print( " )   " );
+  }
+  Serial.println(" ");
+
+
+
+  // tft.fillTriangle( x, y, ext_point[i][0], ext_point[i][1], int_point[j][0], int_point[j][1], colour);
+
+  for ( i = 0; i < n; i++)
+  {
+    tft.fillTriangle( x, y, ext_point[i][0], ext_point[i][1], int_point[i][0], int_point[i][1], colour);
+    delay(2000);
+    if ( (i + 1) < n )
+    {
+      tft.fillTriangle( x, y, ext_point[i + 1][0], ext_point[i + 1][1], int_point[i][0], int_point[i][1], colour2);
+    }
+    else
+    {
+      tft.fillTriangle( x, y, ext_point[0][0], ext_point[0][1], int_point[n - 1][0], int_point[n - 1][1], BLACK);
+    }
+    delay(5000);
+    Serial.print( "loop:" );
+    Serial.println( i );
+  }
 
 
 
@@ -195,40 +240,46 @@ void loop() {
   tft.writeFillRect( 10, 10, 10, 210, BLUE);
   delay(5000);
 
-
-  delay(1500);
-  drawStar( 100, 100, 100, 50, 3, 0, CYAN);
-  delay(5000);
-
-  printmsg( 115, "ppppppppppppppp" );
-  tft.writeFillRect( 20, 20, 80, 120, CYAN);
-  delay(5000);
-
-  printmsg( 215, "ceva aici" );
-  delay(5000);
-  tft.writeFillRect( 50, 50, 100, 100, GREEN);
-  printmsg( 127, "HUSARS" );
-  printmsg( 124, "HUSARS" );
-  printmsg( 110, "HUSARS" );
-  printmsg( 120, "                     HUSARS" );
-  delay(5000);
-
-  tft.setTextSize(3);
-  tft.fillCircle( 150, 200, 50 , WHITE);
-  printmsg( 150, "full circle" );
-  delay(5000);
-  tft.setTextSize( 6, 6);
-  tft.drawCircle( 50, 50, 50 , WHITE);
-
-  printmsg( 10, "draw  Circle" );
-  delay(5000);
-  tft.fillTriangle( 50, 50, 180, 180, 50, 180, BLUE );
-  tft.setCursor( 150, 150);
-  delay(5000);
   tft.fillScreen(RED);
+  delay(1500);
+  drawStar( 70, 70, 70, 20, 3, 0, CYAN);
+  delay(500);
+  drawStar( 220, 100, 50, 10, 5, 0, WHITE);
+  delay(500);
+  drawStar( 100, 150, 20, 20, 6, 0, WHITE, BLACK);
+  delay(500);
+  drawStar( 220, 100, 50, 10, 5, 0, WHITE, BLUE, 1);
+  delay(500);
+  /*
+    printmsg( 115, "ppppppppppppppp" );
+    tft.writeFillRect( 20, 20, 80, 120, CYAN);
+    delay(5000);
+
+    printmsg( 215, "ceva aici" );
+    delay(5000);
+    tft.writeFillRect( 50, 50, 100, 100, GREEN);
+    printmsg( 127, "HUSARS" );
+    printmsg( 124, "HUSARS" );
+    printmsg( 110, "HUSARS" );
+    printmsg( 120, "                     HUSARS" );
+    delay(5000);
+
+    tft.setTextSize(3);
+    tft.fillCircle( 150, 200, 50 , WHITE);
+    printmsg( 150, "full circle" );
+    delay(5000);
+    tft.setTextSize( 6, 6);
+    tft.drawCircle( 50, 50, 50 , WHITE);
+
+    printmsg( 10, "draw  Circle" );
+    delay(5000);
+    tft.fillTriangle( 50, 50, 180, 180, 50, 180, BLUE );
+    tft.setCursor( 150, 150);
+    delay(5000);
+    tft.fillScreen(RED);
 
 
-
+  */
 
   delay(15000);
 }
